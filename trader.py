@@ -121,7 +121,7 @@ class Binance:
 			timestamp_print(f'Binance.get_market_info("{coin}") returned None!')
 
 	def get_order_book(self, ticker):
-		api_response = requests.get('https://api.binance.com/api/v1/depth', params = {'symbol': ticker, 'limit':100})
+		api_response = requests.get('https://api.binance.com/api/v3/depth', params = {'symbol': ticker, 'limit':100})
 		return json.loads(api_response.content.decode('utf-8'))
 
 
@@ -171,7 +171,7 @@ def algo_one():
 		
 		print('\u001b[37m' + '-' * 30)
 
-		time.sleep(600)
+		time.sleep(300)
 
 if __name__ == '__main__':	
 	algo_one()
