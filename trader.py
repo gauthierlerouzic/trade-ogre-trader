@@ -161,6 +161,8 @@ def algo_one():
 
 	while True:
 		trade_ogre.cancel_order('all')
+		
+		time.sleep(100)
 
 		for c in COINS:
 			buy_low(c)
