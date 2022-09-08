@@ -146,13 +146,15 @@ def get_day_high(coin):
 
 	return (binance_day_hi + trade_ogre_day_hi) / 2
 
+def get_differences(coin)
+	return (get_day_high(coin) - get_day_high(coin))
 
 def buy_low(coin):
-	price = get_day_low(coin) + 0.00000001
+	price = get_day_low(coin) + get_differences(coin) / 10
 	return trade_ogre.buy_coin(coin, (trade_ogre.get_bal('BTC') / len(COINS)) / price, price)['success']
 
 def sell_high(coin):
-	return trade_ogre.sell_coin(coin, trade_ogre.get_bal(coin) / 2, get_day_high(coin) - 0.00000001)['success']
+	return trade_ogre.sell_coin(coin, trade_ogre.get_bal(coin) / 2, get_day_high(coin) - get_differences(coin) / 10)['success']
 
 def algo_one():
 	print('\u001b[37m', end='')
