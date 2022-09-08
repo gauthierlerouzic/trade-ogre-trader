@@ -146,7 +146,7 @@ def get_day_high(coin):
 
 	return (binance_day_hi + trade_ogre_day_hi) / 2
 
-def get_differences(coin)
+def get_differences(coin):
 	return (get_day_high(coin) - get_day_high(coin))
 
 def buy_low(coin):
