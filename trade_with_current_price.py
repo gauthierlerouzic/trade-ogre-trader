@@ -6,7 +6,7 @@ import sys
 
 trade_ogre_api_key = 'db9a6605a97cc550855146b3d05dde32'
 trade_ogre_secret_key = 'ca195986c18fb9c19dd81d14389630f2'
-COINS = ['RVN', 'LTC', 'XMR', 'ETH', 'DOGE', 'BEAM']
+COINS = ['RVN', 'XRP', 'XMR', 'LTC', 'ETH']
 
 debug = '--debug' in sys.argv
 base_url = 'https://tradeogre.com/api/v1'
@@ -142,15 +142,20 @@ def get_day_high(coin):
 
 	return (binance_day_hi + trade_ogre_day_hi) / 2
 
+def get_current_price(coin):
+	trade_ogre_current_price = float(trade_ogre.get_market_info(coin)['price'])
+	
+	return (trade_ogre_current_price)
+
 def get_differences(coin):
 	return (get_day_high(coin) - get_day_high(coin))
 
 def buy_low(coin):
-	price = get_day_low(coin) + get_differences(coin) / 10
+	price = get_current_price + (get_current_price * 0.01)
 	return trade_ogre.buy_coin(coin, (trade_ogre.get_bal('BTC') / len(COINS)) / price, price)['success']
 
 def sell_high(coin):
-	return trade_ogre.sell_coin(coin, trade_ogre.get_bal(coin) / 2, get_day_high(coin) - get_differences(coin) / 10)['success']
+	return trade_ogre.sell_coin(coin, trade_ogre.get_bal(coin) / 2, get_current_price(coin) - get_current_price * 0.01)['success']
 
 def algo_one():
 	print('\u001b[37m', end='')
