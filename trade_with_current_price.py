@@ -101,61 +101,33 @@ class TradeOgre:
 
 		return prev_orders
 
-
-class Binance:
-
-	def get_market_info(self, coin):
-		'''
-		RVN data at [398]
-		'''
-		api_response = requests.get('https://api.binance.com/api/v1/ticker/24hr')
-
-		for c in json.loads(api_response.content.decode('utf-8')):
-			if c['symbol'] == coin + 'BTC':
-				if debug:
-					timestamp_print(c)
-				return c
-		if debug:
-			timestamp_print(f'Binance.get_market_info("{coin}") returned None!')
-
-	def get_order_book(self, ticker):
-		api_response = requests.get('https://api.binance.com/api/v3/depth', params = {'symbol': ticker, 'limit':100})
-		return json.loads(api_response.content.decode('utf-8'))
-
-
 '''
 Create classes with API keys.
 '''
 
-binance = Binance()
 trade_ogre = TradeOgre(trade_ogre_api_key, trade_ogre_secret_key)
 
 def get_day_low(coin):
-	binance_day_low = float(binance.get_market_info(coin)['lowPrice'])
 	trade_ogre_day_low = float(trade_ogre.get_market_info(coin)['low'])
 
-	return (binance_day_low + trade_ogre_day_low) / 2
+	return trade_ogre_day_low
 
 def get_day_high(coin):
-	binance_day_hi = float(binance.get_market_info(coin)['highPrice'])
 	trade_ogre_day_hi = float(trade_ogre.get_market_info(coin)['high'])
 
-	return (binance_day_hi + trade_ogre_day_hi) / 2
+	return trade_ogre_day_hi
 
 def get_current_price(coin):
 	trade_ogre_current_price = float(trade_ogre.get_market_info(coin)['price'])
 	
 	return (trade_ogre_current_price)
 
-def get_differences(coin):
-	return (get_day_high(coin) - get_day_high(coin))
-
 def buy_low(coin):
-	price = get_current_price + (get_current_price * 0.01)
+	price = get_current_price(coin) - (get_current_price(coin) * 0.01)
 	return trade_ogre.buy_coin(coin, (trade_ogre.get_bal('BTC') / len(COINS)) / price, price)['success']
 
 def sell_high(coin):
-	return trade_ogre.sell_coin(coin, trade_ogre.get_bal(coin) / 2, get_current_price(coin) - get_current_price * 0.01)['success']
+	return trade_ogre.sell_coin(coin, trade_ogre.get_bal(coin) / 2, get_current_price(coin) + get_current_price(coin) * 0.01)['success']
 
 def algo_one():
 	print('\u001b[37m', end='')
