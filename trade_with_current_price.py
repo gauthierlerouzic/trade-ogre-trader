@@ -4,8 +4,8 @@ import time
 import datetime
 import sys
 
-trade_ogre_api_key = 'db9a6605a97cc550855146b3d05dde32'
-trade_ogre_secret_key = 'ca195986c18fb9c19dd81d14389630f2'
+trade_ogre_api_key = 'YOUR_TRADEOGRE_API_KEY'
+trade_ogre_secret_key = 'YOUR_TRADEOGRE_SECRET_API_KEY'
 COINS = ['RVN', 'XRP', 'XMR', 'LTC', 'ETH']
 
 debug = '--debug' in sys.argv
